@@ -1,0 +1,11 @@
+name: univideo
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python>3.5
+  - pip
+  - numpy>=1.16
+  - matplotlib
+  - jupyter 
+  - pip:
