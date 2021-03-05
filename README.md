@@ -12,5 +12,5 @@ Unity high performance video writer
 ## Update
 To update the anaconda environment run in repo directory:
 ```
-conda env update --name vr2p --file environment.yml
+conda env update --name univideo --file environment.yml
 ```

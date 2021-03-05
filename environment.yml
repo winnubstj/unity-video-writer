@@ -8,4 +8,5 @@ dependencies:
   - numpy>=1.16
   - matplotlib
   - jupyter 
+  - pillow
   - pip:
