@@ -1,0 +1,7 @@
+{
+    "name": "unity-video-writer",
+    "version": "1.0.0",
+    "displayName": "Unity Video Writer",
+    "description": "Write binary movie files",
+    "unity": "2018.3",
+}
