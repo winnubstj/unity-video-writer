@@ -1,12 +1,21 @@
 {
     "name": "unity-video-writer",
-    "references": [],
-    "optionalUnityReferences": [],
+    "references": [
+        "GUID:e92bd5a877b3b424fb8755dd8ba9800a"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": []
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "gimbl",
+            "expression": "0.0.1",
+            "define": "USE_GIMBL_NAME"
+        }
+    ],
+    "noEngineReferences": false
 }

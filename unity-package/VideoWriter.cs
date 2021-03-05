@@ -6,9 +6,14 @@ using System.IO;
 using System.IO.Compression;
 using System.Threading;
 using UnityEngine.Rendering;
+#if USE_GIMBL_NAME
+using Gimbl;
+#endif
 
 public class VideoWriter : MonoBehaviour
 {
+    public string outputFolder = "C:\\";
+    public bool writeVideo = true;
     public float frameRate = 24;
     // The Encoder Thread
     private System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
@@ -16,23 +21,41 @@ public class VideoWriter : MonoBehaviour
     private BinaryWriter stream;
     IEnumerator Start()
     {
-        stream = new BinaryWriter(File.Open("C:\\temp\\video.bin", FileMode.Create));
-
-        while (true)
+        if (writeVideo)
         {
-            yield return new WaitForSeconds((1f / frameRate));
-            yield return new WaitForEndOfFrame();
+#if USE_GIMBL_NAME
+            LoggerObject log = FindObjectOfType<LoggerObject>();
+            if (log)
+            { 
+                Debug.Log(log.logFile.filePath);
+            }
+#endif
+            // Create file using timestamp (default).
+            if (stream==null)
+            {
+                string fileName = $"{DateTime.Now.Year}_{DateTime.Now.Month}_{DateTime.Now.Day}__{DateTime.Now.Hour}-{DateTime.Now.Minute}-{DateTime.Now.Second}.univideo";
+                stream = new BinaryWriter(File.Open(Path.Combine(outputFolder,fileName), FileMode.Create));
+            }
 
-            var rt = RenderTexture.GetTemporary(Screen.width, Screen.height, 0, RenderTextureFormat.ARGB32);
-            ScreenCapture.CaptureScreenshotIntoRenderTexture(rt);
-            AsyncGPUReadback.Request(rt, 0, TextureFormat.ARGB32, OnCompleteReadback);
-            RenderTexture.ReleaseTemporary(rt);
+            while (true)
+            {
+                yield return new WaitForSeconds((1f / frameRate));
+                yield return new WaitForEndOfFrame();
+
+                var rt = RenderTexture.GetTemporary(Screen.width, Screen.height, 0, RenderTextureFormat.ARGB32);
+                ScreenCapture.CaptureScreenshotIntoRenderTexture(rt);
+                AsyncGPUReadback.Request(rt, 0, TextureFormat.ARGB32, OnCompleteReadback);
+                RenderTexture.ReleaseTemporary(rt);
+            }
         }
     }
     void OnDisable()
     {
-        stream.Close();
-        stream = null;
+        if (stream!=null)
+        {
+            stream.Close();
+            stream = null;
+        }
     }
 
         void OnCompleteReadback(AsyncGPUReadbackRequest request)
