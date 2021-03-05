@@ -1,13 +1,14 @@
 using UnityEditor;
+using UnityEngine;
 public class VideoWriterEditor
 {
-    [MenuItem("VideoWriter/CreateVideoWriter")]
+    [MenuItem("Window/VideoWriter/CreateVideoWriter")]
     static void Create()
     {
-         for (int x=0; x!=10; x++)
-         {
-              GameObject go = new GameObject("MyCreatedGO"+i);
-              go.transform.position = new Vector3(x,0,0);
-         }
+        if (GameObject.FindObjectOfType<VideoWriter>() == null)
+        { 
+            GameObject videoWriter = (GameObject)GameObject.Instantiate(Resources.Load("VideoWriter"));
+            videoWriter.name = "VideoWriter";
+        }
     }
 }
