@@ -16,6 +16,7 @@ public class VideoWriter : MonoBehaviour
     public bool writeVideo = true;
     public float frameRate = 24;
     // The Encoder Thread
+    private string fileName;
     private System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
     private byte[] im;
     private BinaryWriter stream;
@@ -26,17 +27,19 @@ public class VideoWriter : MonoBehaviour
 #if USE_GIMBL_NAME
             LoggerObject log = FindObjectOfType<LoggerObject>();
             if (log)
-            { 
-                Debug.Log(log.logFile.filePath);
+            {
+                fileName = $"{Path.GetFileNameWithoutExtension(log.logFile.filePath)}.univideo";
             }
 #endif
             // Create file using timestamp (default).
-            if (stream==null)
+            if (fileName==null)
             {
                 string fileName = $"{DateTime.Now.Year}_{DateTime.Now.Month}_{DateTime.Now.Day}__{DateTime.Now.Hour}-{DateTime.Now.Minute}-{DateTime.Now.Second}.univideo";
-                stream = new BinaryWriter(File.Open(Path.Combine(outputFolder,fileName), FileMode.Create));
+                
             }
-
+            // Create file stream.
+            stream = new BinaryWriter(File.Open(Path.Combine(outputFolder, fileName), FileMode.Create));
+            // Start loop
             while (true)
             {
                 yield return new WaitForSeconds((1f / frameRate));
