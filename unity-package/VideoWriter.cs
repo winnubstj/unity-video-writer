@@ -15,6 +15,7 @@ public class VideoWriter : MonoBehaviour
     public string outputFolder = "C:\\";
     public bool writeVideo = true;
     public float frameRate = 24;
+    public int quality = 75;
     // The Encoder Thread
     private string fileName;
     private System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
@@ -75,7 +76,7 @@ public class VideoWriter : MonoBehaviour
             stopwatch.Restart();
         }
         // Writer raw data
-        im = tex.EncodeToJPG(75);
+        im = tex.EncodeToJPG(quality);
         stream.Write(BitConverter.GetBytes(im.Length));
         stream.Write(im);
         stream.Flush();
