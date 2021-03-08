@@ -2,6 +2,7 @@
 Unity high performance video writer
 
 # Install
+1. Download and install FFMPEG https://ffmpeg.org/download.html
 1. Create anaconda environment from yml file:
     ```
     conda env create -f environment.yml
