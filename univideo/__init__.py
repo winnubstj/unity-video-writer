@@ -19,6 +19,7 @@ def process_univideo(input_file):
     counter = 0
     export_file_name = os.path.join(temp_folder,"export.txt") # stores frame file names and duration
     byte_size = os.path.getsize(os.path.join(base_dir,input_file_name))
+    print('Starting..')
     with open(os.path.join(base_dir,input_file_name), "rb") as file, open(export_file_name, "w") as export_file, tqdm(total=byte_size) as pbar:
         while file.read(1):
             counter+=1
