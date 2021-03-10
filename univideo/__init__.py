@@ -44,7 +44,6 @@ def process_univideo(input_file):
     subprocess.call(f'ffmpeg -y -f concat -i export.txt -filter:v "vflip" "../{os.path.splitext(input_file_name)[0]}.mp4"', shell=True)
     os.chdir(base_dir)
     # delete temp folder.
-    print(f'{os.path.splitext(input_file_name)[0]}')
     if os.path.isfile(os.path.join(base_dir,f'{os.path.splitext(input_file_name)[0]}.mp4')):
         shutil.rmtree(temp_folder)
         # delete binary file.
