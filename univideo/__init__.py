@@ -4,6 +4,7 @@ import subprocess
 import os
 import shutil
 import glob
+from tqdm import tqdm
 
 
 def process_univideo(input_file):
@@ -17,12 +18,14 @@ def process_univideo(input_file):
         os.mkdir(temp_folder)
     counter = 0
     export_file_name = os.path.join(temp_folder,"export.txt") # stores frame file names and duration
-    with open(os.path.join(base_dir,input_file_name), "rb") as file, open(export_file_name, "w") as export_file:
+    byte_size = os.path.getsize(os.path.join(base_dir,input_file_name))
+    with open(os.path.join(base_dir,input_file_name), "rb") as file, open(export_file_name, "w") as export_file, tqdm(total=byte_size) as pbar:
         while file.read(1):
             counter+=1
             file.seek(-1,1)
             # get first 4 bytes (im size in bytes)
             im_byte_size = int.from_bytes(file.read(4),byteorder='little')
+            pbar.update(im_byte_size+4+8) # im+sizeheader+durationheader
             # get jpeg.
             im_bytes = file.read(im_byte_size)
             if file.read(1):
@@ -41,6 +44,10 @@ def process_univideo(input_file):
     subprocess.call(f'ffmpeg -y -f concat -i export.txt -filter:v "vflip" ../{os.path.splitext(input_file_name)[0]}.mp4', shell=True)
     os.chdir(base_dir)
     # delete temp folder.
-    shutil.rmtree(temp_folder)
-    # delete binary file.
-    os.remove(os.path.join(base_dir,input_file_name))
+    if os.path.isfile(os.path.join(base_dir,f'{os.path.splitext(input_file_name)[0]}.mp4')):
+        shutil.rmtree(temp_folder)
+        # delete binary file.
+        os.remove(os.path.join(base_dir,input_file_name))
+        return True
+    else:
+        return False

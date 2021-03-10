@@ -12,7 +12,9 @@ def process_folder(base_folder):
     print(f'Found {len(file_list)} univideo files in {base_folder}\n')
     for counter,file in enumerate(file_list):
         print(f'Processing: {os.path.basename(file)} ({counter+1} of {len(file_list)})')
-        process_univideo(file)
+        if process_univideo(file)==False:
+            print(f'Could not process {os.path.basename(file)}: exiting')
+            break
 
 if __name__ == "__main__":
     process_folder(sys.argv[1])

@@ -9,4 +9,5 @@ dependencies:
   - matplotlib
   - jupyter 
   - pillow
+  - tqdm
   - pip:
