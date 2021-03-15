@@ -6,13 +6,13 @@ using System.IO;
 using System.IO.Compression;
 using System.Threading;
 using UnityEngine.Rendering;
+using UnityEditor;
 #if USE_GIMBL_NAME
 using Gimbl;
 #endif
 
 public class VideoWriter : MonoBehaviour
 {
-    public string outputFolder = "C:\\";
     public bool writeVideo = true;
     public float frameRate = 24;
     public int quality = 75;
@@ -39,7 +39,7 @@ public class VideoWriter : MonoBehaviour
                 
             }
             // Create file stream.
-            stream = new BinaryWriter(File.Open(Path.Combine(outputFolder, fileName), FileMode.Create));
+            stream = new BinaryWriter(File.Open(Path.Combine(PlayerPrefs.GetString("unityvideowriter.outputfolder","C:\\"), fileName), FileMode.Create));
             // Start loop
             while (true)
             {
@@ -84,4 +84,21 @@ public class VideoWriter : MonoBehaviour
         DestroyImmediate(tex);
     }
 
+
+}
+
+[CustomEditor(typeof(VideoWriter))]
+public class VideoWriterInspector : Editor
+{
+    private string _outputFolder;
+    private string _newOutputFolder;
+    public override void OnInspectorGUI()
+    {
+        if (_outputFolder == null) { _outputFolder = PlayerPrefs.GetString("unityvideowriter.outputfolder", "C:\\"); }
+        _newOutputFolder = EditorGUILayout.TextField("Output Folder: ", _outputFolder);
+        if (_newOutputFolder != _outputFolder)
+        { PlayerPrefs.SetString("unityvideowriter.outputfolder", _newOutputFolder); _outputFolder = _newOutputFolder; }
+        // Show default inspector property editor
+        DrawDefaultInspector();
+    }
 }
