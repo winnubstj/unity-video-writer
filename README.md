@@ -3,6 +3,7 @@ Unity high performance video writer
 
 # Install
 1. Download and install FFMPEG https://ffmpeg.org/download.html or http://blog.gregzaal.com/how-to-install-ffmpeg-on-windows/
+1. Python and other associated files can be found in .external folder.
 1. Create anaconda environment from yml file:
     ```
     conda env create -f environment.yml
